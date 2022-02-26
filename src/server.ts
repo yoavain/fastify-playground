@@ -1,7 +1,14 @@
-import type { FastifyInstance, RouteShorthandOptions } from "fastify";
+import type { FastifyInstance, FastifyServerOptions, RouteShorthandOptions } from "fastify";
 import Fastify from "fastify";
 
-const server: FastifyInstance = Fastify({});
+const fastifyServerOptions: FastifyServerOptions = {
+    logger: {
+        level: "info",
+        file: "logs/fastify.log"
+    }
+};
+
+const server: FastifyInstance = Fastify(fastifyServerOptions);
 
 const opts: RouteShorthandOptions = {
     schema: {
