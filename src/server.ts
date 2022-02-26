@@ -1,5 +1,6 @@
 import type { FastifyInstance, FastifyServerOptions, RouteShorthandOptions } from "fastify";
 import Fastify from "fastify";
+import helmet from "fastify-helmet";
 import { startApolloServer } from "~src/graphql/apollo";
 import type { ApolloServer } from "apollo-server-fastify";
 
@@ -10,7 +11,7 @@ const fastifyServerOptions: FastifyServerOptions = {
     }
 };
 
-const server: FastifyInstance = Fastify(fastifyServerOptions);
+const fastifyServer: FastifyInstance = Fastify(fastifyServerOptions);
 
 const opts: RouteShorthandOptions = {
     schema: {
@@ -27,25 +28,28 @@ const opts: RouteShorthandOptions = {
     }
 };
 
-server.get("/ping", opts, async (request, reply) => {
+fastifyServer.get("/ping", opts, async (request, reply) => {
     return { pong: "it worked!" };
 });
 
 const start = async () => {
     try {
+        // Helmet
+        fastifyServer.register(helmet, { global: true });
+
         //region Apollo
-        const apolloServer: ApolloServer = await startApolloServer(server);
-        server.register(apolloServer.createHandler());
+        const apolloServer: ApolloServer = await startApolloServer(fastifyServer);
+        fastifyServer.register(apolloServer.createHandler());
         //endregion Apollo
 
-        await server.listen(3000);
+        await fastifyServer.listen(3000);
 
-        const address = server.server.address();
+        const address = fastifyServer.server.address();
         const port = typeof address === "string" ? address : address?.port;
 
     }
     catch (err) {
-        server.log.error(err);
+        fastifyServer.log.error(err);
         // eslint-disable-next-line no-process-exit
         process.exit(1);
     }
