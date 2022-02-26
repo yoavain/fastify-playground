@@ -37,6 +37,9 @@
     "typescript": "4.5.5"
   },
   "dependencies": {
-    "fastify": "3.27.2"
+    "apollo-server-core": "3.6.3",
+    "apollo-server-fastify": "3.6.3",
+    "fastify": "3.27.2",
+    "graphql": "16.3.0"
   }
 }

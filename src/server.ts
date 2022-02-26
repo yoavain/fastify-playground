@@ -1,5 +1,7 @@
 import type { FastifyInstance, FastifyServerOptions, RouteShorthandOptions } from "fastify";
 import Fastify from "fastify";
+import { startApolloServer } from "~src/graphql/apollo";
+import type { ApolloServer } from "apollo-server-fastify";
 
 const fastifyServerOptions: FastifyServerOptions = {
     logger: {
@@ -31,6 +33,11 @@ server.get("/ping", opts, async (request, reply) => {
 
 const start = async () => {
     try {
+        //region Apollo
+        const apolloServer: ApolloServer = await startApolloServer(server);
+        server.register(apolloServer.createHandler());
+        //endregion Apollo
+
         await server.listen(3000);
 
         const address = server.server.address();
