@@ -7,12 +7,7 @@
         "importsNotUsedAsValues": "error",
         "allowJs": true,
         "noEmit": true,
-        "baseUrl": ".",
-        "paths": {
-            "~src/*": ["src/*"],
-            "~test/*": ["test/*"],
-            "~resources/*": ["resources/*"]
-        }
+        "baseUrl": "."
     },
     "include": ["./src/**/*", "./test/**/*", "./e2e/**/*", "./*.ts", "./*.js"]
 }

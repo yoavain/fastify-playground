@@ -1,9 +1,11 @@
 import type { FastifyInstance, FastifyServerOptions, RouteShorthandOptions } from "fastify";
 import Fastify from "fastify";
 import { fastifyHelmet } from "fastify-helmet";
+//import type { FastifyCorsOptions } from "fastify-cors";
+//import fastifyCors from "fastify-cors";
 import fastifyCompress from "fastify-compress";
 import fastifyStatic from "fastify-static";
-import { startApolloServer } from "~src/graphql/apollo";
+import { startApolloServer } from "./graphql/apollo";
 import type { ApolloServer } from "apollo-server-fastify";
 import path from "path";
 
@@ -35,6 +37,19 @@ const start = async () => {
     try {
         // Helmet
         fastifyServer.register(fastifyHelmet, { global: true });
+
+        /*
+        // Cors
+        fastifyServer.register(fastifyCors, (instance: FastifyInstance) => {
+            return (req, callback) => {
+                const origin = req.headers.origin;
+                // do not include CORS headers for requests from localhost
+                const hostname = new URL(origin).hostname;
+                const corsOptions: FastifyCorsOptions = { origin: hostname !== "localhost" };
+                callback(null, corsOptions);
+            };
+        });
+        */
 
         // Compress
         fastifyServer.register(fastifyCompress, { threshold: 1024 });

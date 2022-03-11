@@ -5,13 +5,19 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
-    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register src/server.ts",
+    "start": "node -r ts-node/register/transpile-only src/server.ts",
     "prestart:fastify": "npm run build",
-    "start:fastify": "fastify start dist/server.js"
+    "start:fastify": "fastify start dist/server.js",
+    "print-routes": "fastify print-routes dist/server.js",
+    "help:fastify": "fastify --help"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=14 <17",
+    "npm": "<9"
+  },
   "devDependencies": {
     "@jest/types": "27.5.1",
     "@tsconfig/node14": "1.0.1",
@@ -33,7 +39,6 @@
     "rimraf": "3.0.2",
     "ts-jest": "27.1.3",
     "ts-node": "10.7.0",
-    "tsconfig-paths": "3.13.0",
     "typescript": "4.6.2"
   },
   "dependencies": {

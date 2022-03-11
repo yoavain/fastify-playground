@@ -2,8 +2,8 @@ import { ApolloServer } from "apollo-server-fastify";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import type { ApolloServerPlugin } from "apollo-server-plugin-base";
 import type { FastifyInstance } from "fastify";
-import { typeDefs } from "~src/graphql/schema";
-import { resolvers } from "~src/graphql/resolvers";
+import { typeDefs } from "./schema";
+import { resolvers } from "./resolvers";
 
 const fastifyAppClosePlugin = (app: FastifyInstance): ApolloServerPlugin => {
     return {
