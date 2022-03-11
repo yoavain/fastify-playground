@@ -5,3 +5,5 @@ Learning Fastify...
 3. Helmet
 4. Compress
 5. Static
+6. AutoLoad
+7. 

@@ -4,9 +4,7 @@ import { fastifyHelmet } from "fastify-helmet";
 //import type { FastifyCorsOptions } from "fastify-cors";
 //import fastifyCors from "fastify-cors";
 import fastifyCompress from "fastify-compress";
-import fastifyStatic from "fastify-static";
-import { startApolloServer } from "./graphql/apollo";
-import type { ApolloServer } from "apollo-server-fastify";
+import { fastifyAutoload } from "fastify-autoload";
 import path from "path";
 
 const fastifyServerOptions: FastifyServerOptions = {
@@ -16,7 +14,7 @@ const fastifyServerOptions: FastifyServerOptions = {
     }
 };
 
-const fastifyServer: FastifyInstance = Fastify(fastifyServerOptions);
+const fastify: FastifyInstance = Fastify(fastifyServerOptions);
 
 const opts: RouteShorthandOptions = {
     schema: {
@@ -36,7 +34,7 @@ const opts: RouteShorthandOptions = {
 const start = async () => {
     try {
         // Helmet
-        fastifyServer.register(fastifyHelmet, { global: true });
+        fastify.register(fastifyHelmet, { global: true });
 
         /*
         // Cors
@@ -52,31 +50,30 @@ const start = async () => {
         */
 
         // Compress
-        fastifyServer.register(fastifyCompress, { threshold: 1024 });
+        fastify.register(fastifyCompress, { threshold: 1024 });
 
-        // Static
-        fastifyServer.register(fastifyStatic, {
-            root: path.join(__dirname, "public"),
-            prefix: "/public/"
+        // This loads all plugins defined in plugins
+        // those should be support plugins that are reused
+        // through your application
+        fastify.register(fastifyAutoload, {
+            dir: path.join(__dirname, "plugins"),
+            options: {  ...opts }
         });
 
-        // REST
-        fastifyServer.get("/ping", opts, async (request, reply) => {
-            return { pong: "it worked!" };
+        // This loads all plugins defined in routes
+        // define your routes in one of these
+        fastify.register(fastifyAutoload, {
+            dir: path.join(__dirname, "routes"),
+            options: {  ...opts }
         });
 
-        //region Apollo
-        const apolloServer: ApolloServer = await startApolloServer(fastifyServer);
-        fastifyServer.register(apolloServer.createHandler());
-        //endregion Apollo
+        await fastify.listen(3000);
 
-        await fastifyServer.listen(3000);
-
-        const address = fastifyServer.server.address();
+        const address = fastify.server.address();
         const port = typeof address === "string" ? address : address?.port;
     }
     catch (err) {
-        fastifyServer.log.error(err);
+        fastify.log.error(err);
         // eslint-disable-next-line no-process-exit
         process.exit(1);
     }
