@@ -4,6 +4,7 @@ import { fastifyHelmet } from "fastify-helmet";
 //import type { FastifyCorsOptions } from "fastify-cors";
 //import fastifyCors from "fastify-cors";
 import fastifyCompress from "fastify-compress";
+import fastifyMultipart from "fastify-multipart";
 import { fastifyAutoload } from "fastify-autoload";
 import path from "path";
 
@@ -51,6 +52,18 @@ const start = async () => {
 
         // Compress
         fastify.register(fastifyCompress, { threshold: 1024 });
+
+        // Multipart support
+        fastify.register(fastifyMultipart, {
+            limits: {
+                fieldNameSize: 100, // Max field name size in bytes
+                fieldSize: 100,     // Max field value size in bytes
+                fields: 10,         // Max number of non-file fields
+                fileSize: 10000000,  // For multipart forms, the max file size in bytes
+                files: 1,           // Max number of file fields
+                headerPairs: 2000   // Max number of header key=>value pairs
+            }
+        });
 
         // This loads all plugins defined in plugins
         // those should be support plugins that are reused
