@@ -60,7 +60,7 @@ const start = async () => {
                 fieldSize: 100,     // Max field value size in bytes
                 fields: 10,         // Max number of non-file fields
                 fileSize: 10000000,  // For multipart forms, the max file size in bytes
-                files: 1,           // Max number of file fields
+                files: 5,           // Max number of file fields
                 headerPairs: 2000   // Max number of header key=>value pairs
             }
         });
