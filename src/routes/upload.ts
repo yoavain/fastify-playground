@@ -13,7 +13,7 @@ const SUPPORTED_FILE_TYPES = ["image/jpeg", "image/png"];
 
 export default async (fastify: FastifyInstance, opts) => {
     console.log("upload route");
-    fastify.post<{ Body: { file: any }; Response: any }>("/rest/upload", async (request, reply) => {
+    fastify.post<{ Body: any; Response: { uploaded: number} }>("/rest/upload", async (request, reply) => {
         let count = 0;
         for await (const part of request.parts()) {
             if (part.file) {
