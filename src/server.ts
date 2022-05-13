@@ -1,11 +1,11 @@
 import type { FastifyInstance, FastifyServerOptions, RouteShorthandOptions } from "fastify";
 import Fastify from "fastify";
-import { fastifyHelmet } from "fastify-helmet";
+import { fastifyHelmet } from "@fastify/helmet";
 //import type { FastifyCorsOptions } from "fastify-cors";
 //import fastifyCors from "fastify-cors";
-import fastifyCompress from "fastify-compress";
-import fastifyMultipart from "fastify-multipart";
-import { fastifyAutoload } from "fastify-autoload";
+import fastifyCompress from "@fastify/compress";
+import fastifyMultipart from "@fastify/multipart";
+import { fastifyAutoload } from "@fastify/autoload";
 import path from "path";
 
 const fastifyServerOptions: FastifyServerOptions = {
