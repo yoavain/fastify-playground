@@ -9,5 +9,6 @@ import { startApolloServer } from "../graphql/apolloServer";
  */
 module.exports = fastifyPlugin(async (fastify: FastifyInstance, opts: PluginMetadata) => {
     const apolloServer: ApolloServer = await startApolloServer(fastify);
-    fastify.register(apolloServer.createHandler());
+    // todo - wait for v4
+    // fastify.register(apolloServer.createHandler());
 });

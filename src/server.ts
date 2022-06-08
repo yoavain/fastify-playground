@@ -1,11 +1,5 @@
 import type { FastifyInstance, FastifyServerOptions, RouteShorthandOptions } from "fastify";
 import Fastify from "fastify";
-import { fastifyHelmet } from "@fastify/helmet";
-//import type { FastifyCorsOptions } from "fastify-cors";
-//import fastifyCors from "fastify-cors";
-import fastifyCompress from "@fastify/compress";
-import fastifyMultipart from "@fastify/multipart";
-import { fastifyAutoload } from "@fastify/autoload";
 import path from "path";
 
 const fastifyServerOptions: FastifyServerOptions = {
@@ -35,7 +29,7 @@ const opts: RouteShorthandOptions = {
 const start = async () => {
     try {
         // Helmet
-        fastify.register(fastifyHelmet, { global: true });
+        await fastify.register(import("@fastify/helmet"), { global: true });
 
         /*
         // Cors
@@ -51,10 +45,10 @@ const start = async () => {
         */
 
         // Compress
-        fastify.register(fastifyCompress, { threshold: 1024 });
+        await fastify.register(import("@fastify/compress"), { threshold: 1024 });
 
         // Multipart support
-        fastify.register(fastifyMultipart, {
+        await fastify.register(import("@fastify/multipart"), {
             limits: {
                 fieldNameSize: 100, // Max field name size in bytes
                 fieldSize: 100,     // Max field value size in bytes
@@ -68,19 +62,19 @@ const start = async () => {
         // This loads all plugins defined in plugins
         // those should be support plugins that are reused
         // through your application
-        fastify.register(fastifyAutoload, {
+        await fastify.register(import("@fastify/autoload"), {
             dir: path.join(__dirname, "plugins"),
             options: {  ...opts }
         });
 
         // This loads all plugins defined in routes
         // define your routes in one of these
-        fastify.register(fastifyAutoload, {
+        await fastify.register(import("@fastify/autoload"), {
             dir: path.join(__dirname, "routes"),
             options: {  ...opts }
         });
 
-        await fastify.listen(3000);
+        await fastify.listen({ port: 3000 });
 
         const address = fastify.server.address();
         const port = typeof address === "string" ? address : address?.port;
