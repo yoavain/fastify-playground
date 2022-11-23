@@ -46,7 +46,7 @@
   "dependencies": {
     "apollo-server-core": "3.11.0",
     "apollo-server-fastify": "3.10.3",
-    "fastify": "4.9.0",
+    "fastify": "4.10.2",
     "@fastify/autoload": "5.4.1",
     "@fastify/compress": "6.1.1",
     "@fastify/helmet": "10.0.2",
