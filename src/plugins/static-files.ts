@@ -1,5 +1,5 @@
 import type { PluginMetadata } from "fastify-plugin";
-import fastifyPlugin from "fastify-plugin";
+import { fastifyPlugin } from "fastify-plugin";
 import type { FastifyInstance } from "fastify";
 import path from "path";
 

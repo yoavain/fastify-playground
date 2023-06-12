@@ -1,34 +1,19 @@
-import { ApolloServer } from "apollo-server-fastify";
-import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
-import type { ApolloServerPlugin } from "apollo-server-plugin-base";
 import type { FastifyInstance } from "fastify";
+import type { BaseContext } from "@apollo/server";
+import { ApolloServer } from "@apollo/server";
+import { fastifyApolloDrainPlugin } from "@as-integrations/fastify";
 import { typeDefs } from "./schema";
 import { resolvers } from "./resolvers";
 
-const fastifyAppClosePlugin = (app: FastifyInstance): ApolloServerPlugin => {
-    return {
-        async serverWillStart() {
-            return {
-                async drainServer() {
-                    await app.close();
-                }
-            };
-        }
-    };
-};
 
-export const startApolloServer = async (server: FastifyInstance): Promise<ApolloServer> => {
-    const apolloServer = new ApolloServer({
+export const startApolloServer = async (fastify: FastifyInstance): Promise<ApolloServer> => {
+    const apolloServer: ApolloServer = new ApolloServer<BaseContext>({
         typeDefs,
         resolvers,
-        plugins: [
-            fastifyAppClosePlugin(server),
-            ApolloServerPluginDrainHttpServer({ httpServer: server.server })
-        ],
+        plugins: [fastifyApolloDrainPlugin(fastify)],
         introspection: true
     });
-
     await apolloServer.start();
-    server.log.info("Apollo serer is in " + apolloServer.graphqlPath);
+    fastify.log.info("Apollo serer started");
     return apolloServer;
 };
