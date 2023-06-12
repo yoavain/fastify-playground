@@ -6,6 +6,7 @@ import { pipeline } from "stream";
 import util from "util";
 import type { FileTypeResult } from "file-type";
 import { fromStream } from "file-type";
+import type { MultipartFile } from "@fastify/multipart";
 
 const pump = util.promisify(pipeline);
 
@@ -24,11 +25,12 @@ export default async (fastify: FastifyInstance, opts) => {
         let filesAccepted = 0;
         const errors = [];
         for await (const part of request.parts()) {
-            if (part.file) {
+            const { file, filename } = part as MultipartFile;
+            if (file) {
                 filesReceived++;
                 // Save to temp file
-                const filePath = path.join(os.tmpdir(), part.filename);
-                await pump(part.file, fs.createWriteStream(filePath));
+                const filePath = path.join(os.tmpdir(), filename);
+                await pump(file, fs.createWriteStream(filePath));
                 // Parse actual file type
                 const stream = fs.createReadStream(filePath);
                 const fileType: FileTypeResult = await fromStream(stream);
