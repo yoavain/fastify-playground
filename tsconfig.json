@@ -3,7 +3,7 @@
     "compilerOptions": {
         "lib": ["es2020", "dom"],
         "strict": false,
-        "moduleResolution": "node",
+        "moduleResolution": "NodeNext",
         "verbatimModuleSyntax": false,
         "allowJs": true,
         "noEmit": true,
