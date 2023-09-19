@@ -54,7 +54,7 @@
     "fastify": "4.22.2",
     "fastify-plugin": "4.5.1",
     "file-type": "16.5.4",
-    "graphql": "16.8.0",
+    "graphql": "16.8.1",
     "graphql-tag": "2.12.6"
   }
 }
