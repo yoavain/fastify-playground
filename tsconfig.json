@@ -1,13 +1,17 @@
 {
-    "extends": "@tsconfig/node18",
+    "extends": "@tsconfig/node24",
     "compilerOptions": {
         "lib": ["es2020", "dom"],
         "strict": false,
         "moduleResolution": "NodeNext",
         "verbatimModuleSyntax": false,
         "allowJs": true,
-        "noEmit": true,
-        "baseUrl": "."
+        "noEmit": true
+    },
+    "ts-node": {
+        "compilerOptions": {
+            "rootDir": "./src"
+        }
     },
     "include": ["./src/**/*", "./test/**/*", "./e2e/**/*", "./*.ts", "./*.js"]
 }
